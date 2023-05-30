@@ -2,11 +2,13 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json()); // Parsear los datos en formato JSON
+app.use(cors());
 
 // Importa los enrutadores
 const rifasRoutes = require("./routes/rifas");
