@@ -19,8 +19,8 @@ router.get("/:id", (req, res) => {
 });
 
 //CREAR UNA NUEVA RIFA
-router.post("/:id", (req, res) => {
-  const id = req.params.id;
+router.post("/create", (req, res) => {
+  const id = req.body._id;
 
   const newRifa = new Rifas({
     _id: id,

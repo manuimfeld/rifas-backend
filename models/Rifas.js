@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const rifasSchema = new mongoose.Schema({
   _id: Number,
+  titulo: String,
+  fecha: String,
+  horario: String,
   numeros: [
     {
       numero: Number,
