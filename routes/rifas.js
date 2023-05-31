@@ -58,7 +58,6 @@ router.post("/create", (req, res) => {
 //EDITAR RIFA
 router.put("/:idRifa/numeros", (req, res) => {
   const idRifa = req.params.idRifa;
-  const idNumero = req.params.idNumero;
   const { name, paid, number } = req.body; //Obtener la informacion enviada en el body del request
 
   //Buscar la rifa por su ID en mongo
@@ -70,8 +69,8 @@ router.put("/:idRifa/numeros", (req, res) => {
         if (number < 1 || number >= rifa.numbers.length + 1) {
           res.status(404).json({ error: "Índice de número no válido" });
         } else {
-          rifa.numbers[number - 1].paid = paid;
-          rifa.numbers[number - 1].name = name;
+          rifa.numbers[number].paid = paid;
+          rifa.numbers[number].name = name;
           rifa
             .save()
             .then((rifaActualizada) => {
