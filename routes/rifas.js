@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const Rifas = require("../models/Rifas"); // Ruta al archivo donde se define el modelo
+const Rifa = require("../models/Rifa"); // Ruta al archivo donde se define el modelo
 
-// Define las rutas
-router.get("/:id", (req, res) => {
-  const idRifa = req.params.id;
+//Obtener una rifa por su ID
+router.get("/:idRifa", (req, res) => {
+  const idRifa = req.params.idRifa;
 
-  Rifas.findOne({ _id: idRifa })
+  Rifa.findOne({ _id: idRifa })
     .then((rifa) => {
       if (!rifa) {
         return res.status(404).json({ error: "Rifa no encontrada" });
@@ -18,23 +18,28 @@ router.get("/:id", (req, res) => {
     });
 });
 
-//CREAR UNA NUEVA RIFA
+//Crear una nueva rifa
 router.post("/create", (req, res) => {
-  const id = req.body._id;
+  const rifaId = req.body._id;
+  const rifaTitle = req.body.title;
+  const rifaDate = req.body.date;
+  const rifaHour = req.body.hour;
 
-  const newRifa = new Rifas({
-    _id: id,
-    numeros: [],
+  const newRifa = new Rifa({
+    _id: rifaId,
+    numbers: [],
+    title: rifaTitle,
+    date: rifaDate,
+    hour: rifaHour,
   });
 
   for (let i = 1; i <= 100; i++) {
-    const numero = {
-      numero: i,
-      nombre: ``,
-      estado_pago: false,
+    const number = {
+      number: i,
+      name: ``,
+      paid: false,
     };
-
-    newRifa.numeros.push(numero);
+    newRifa.numbers.push(number);
   }
 
   // Guarda el documento en la colección "rifas"
@@ -42,7 +47,6 @@ router.post("/create", (req, res) => {
     .save()
     .then((savedRifa) => {
       console.log("Rifa agregada:", savedRifa);
-      // Realiza las operaciones que necesites con el documento guardado
       res.send("Rifa agregada correctamente");
     })
     .catch((error) => {
@@ -52,29 +56,30 @@ router.post("/create", (req, res) => {
 });
 
 //EDITAR RIFA
-router.put("/:idRifa/numeros/:idNumero", (req, res) => {
+router.put("/:idRifa/numeros", (req, res) => {
   const idRifa = req.params.idRifa;
   const idNumero = req.params.idNumero;
-  //Obtener la informacion enviada en el body del request
-  const { nombre, estado_pago } = req.body;
+  const { name, paid, number } = req.body; //Obtener la informacion enviada en el body del request
 
   //Buscar la rifa por su ID en mongo
-  Rifas.findOne({ _id: idRifa })
+  Rifa.findOne({ _id: idRifa })
     .then((rifa) => {
       if (!rifa) {
         res.status(404).json({ error: "Rifa no encontrada" });
       } else {
-        if (idNumero < 0 || idNumero >= rifa.numeros.length + 1) {
+        if (number < 1 || number >= rifa.numbers.length + 1) {
           res.status(404).json({ error: "Índice de número no válido" });
         } else {
-          rifa.numeros[idNumero - 1].estado_pago = estado_pago;
-          rifa.numeros[idNumero - 1].nombre = nombre;
+          rifa.numbers[number - 1].paid = paid;
+          rifa.numbers[number - 1].name = name;
           rifa
             .save()
             .then((rifaActualizada) => {
               res.json(rifaActualizada);
             })
-            .catch((error) => {});
+            .catch((error) => {
+              res.status(500).json({ error: "Error al actualizar la rifa" });
+            });
         }
       }
     })
