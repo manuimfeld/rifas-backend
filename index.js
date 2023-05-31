@@ -4,31 +4,32 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const rifasRoutes = require("./routes/rifas");
+const { port } = require("./config");
+
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(express.json()); // Parsear los datos en formato JSON
 app.use(cors());
 
-// Importa los enrutadores
-const rifasRoutes = require("./routes/rifas");
-
 app.use("/rifas", rifasRoutes);
 
 // Conectar a la base de datos de MongoDB usando Mongoose
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Conexión exitosa a MongoDB");
-  })
-  .catch((error) => {
-    console.error("Error al conectar a MongoDB:", error);
-  });
+const connectToDb = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Error to connect to MongoDB");
+  }
+};
+
+connectToDb();
 
 // Iniciar el servidor
 app.listen(port, () => {
-  console.log(`Servidor escuchando en el puerto ${port}`);
+  console.log(`Server listening on  port ${port}`);
 });
