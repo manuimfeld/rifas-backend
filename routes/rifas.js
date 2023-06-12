@@ -66,7 +66,7 @@ router.put("/:idRifa/numeros", (req, res) => {
       if (!rifa) {
         res.status(404).json({ error: "Rifa no encontrada" });
       } else {
-        if (number < 1 || number >= rifa.numbers.length + 1) {
+        if (number < 0 || number >= rifa.numbers.length + 1) {
           res.status(404).json({ error: "Índice de número no válido" });
         } else {
           rifa.numbers[number].paid = paid;
