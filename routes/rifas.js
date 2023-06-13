@@ -105,14 +105,14 @@ webpush.setVapidDetails(
 
 const subscriptions = [];
 
-app.post("/subscribe", (req, res) => {
+router.post("/subscribe", (req, res) => {
   const subscription = req.body;
   subscriptions.push(subscription);
   res.status(201).json({});
 });
 
 // Ruta para enviar la notificación push
-app.post("/send-notification", (req, res) => {
+router.post("/send-notification", (req, res) => {
   const notificationPayload = JSON.stringify({
     title: "¡Notificación de prueba!",
     body: "Has hecho clic en el botón.",
