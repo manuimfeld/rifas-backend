@@ -33,6 +33,7 @@ router.post("/rifas/create", (req, res) => {
     date: rifaDate,
     hour: rifaHour,
   });
+  console.log(rifaNumbers);
 
   for (let i = 1; i <= rifaNumbers; i++) {
     const number = {
