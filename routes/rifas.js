@@ -88,3 +88,44 @@ router.put("/:idRifa/numeros", (req, res) => {
       return;
     });
 });
+
+// NOTIFICATIONS PUSH
+// Configuración de VAPID
+const webpush = require("web-push");
+
+const vapidKeys = {
+  publicKey: process.env.PUBLIC_VAPID_KEY,
+  privateKey: process.env.PRIVATE_VAPID_KEY,
+};
+webpush.setVapidDetails(
+  "mailto:tu_email@example.com",
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
+
+const subscriptions = [];
+
+router.post("/subscribe", (req, res) => {
+  const subscription = req.body;
+  subscriptions.push(subscription);
+  res.status(201).json({});
+});
+
+// Ruta para enviar la notificación push
+router.post("/send-notification", (req, res) => {
+  const notificationPayload = JSON.stringify({
+    title: "¡Notificación de prueba!",
+    body: "Has hecho clic en el botón.",
+    icon: "ruta/a/tu/icono.png",
+  });
+
+  subscriptions.forEach((subscription) => {
+    webpush
+      .sendNotification(subscription, notificationPayload)
+      .catch((error) => console.error(error));
+  });
+
+  res.status(200).json({});
+});
+
+module.exports = router;
