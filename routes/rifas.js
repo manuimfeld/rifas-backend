@@ -91,6 +91,8 @@ router.put("/:idRifa/numeros", (req, res) => {
 
 // NOTIFICATIONS PUSH
 // Configuración de VAPID
+const webpush = require("web-push");
+
 const vapidKeys = {
   publicKey: process.env.PUBLIC_VAPID_KEY,
   privateKey: process.env.PRIVATE_VAPID_KEY,
