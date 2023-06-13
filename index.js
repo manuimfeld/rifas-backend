@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json()); // Parsear los datos en formato JSON
 app.use(cors());
 
-app.use("/rifas", rifasRoutes);
+app.use("/", rifasRoutes);
 
 // Conectar a la base de datos de MongoDB usando Mongoose
 const connectToDb = async () => {

@@ -4,7 +4,7 @@ const router = express.Router();
 const Rifa = require("../models/Rifa"); // Ruta al archivo donde se define el modelo
 
 //Obtener una rifa por su ID
-router.get("/:idRifa", (req, res) => {
+router.get("/rifas/:idRifa", (req, res) => {
   const idRifa = req.params.idRifa;
 
   Rifa.findOne({ _id: idRifa })
@@ -20,7 +20,7 @@ router.get("/:idRifa", (req, res) => {
 });
 
 //Crear una nueva rifa
-router.post("/create", (req, res) => {
+router.post("/rifas/create", (req, res) => {
   const rifaId = req.body._id;
   const rifaTitle = req.body.title;
   const rifaDate = req.body.date;
@@ -57,7 +57,7 @@ router.post("/create", (req, res) => {
 });
 
 //EDITAR RIFA
-router.put("/:idRifa/numeros", (req, res) => {
+router.put("/rifas/:idRifa/numeros", (req, res) => {
   const idRifa = req.params.idRifa;
   const { name, paid, number } = req.body; //Obtener la informacion enviada en el body del request
 
@@ -106,6 +106,7 @@ webpush.setVapidDetails(
 const subscriptions = [];
 
 router.post("/subscribe", (req, res) => {
+  console.log("asd");
   const subscription = req.body;
   subscriptions.push(subscription);
   res.status(201).json({});
