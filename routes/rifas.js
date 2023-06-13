@@ -24,6 +24,7 @@ router.post("/rifas/create", (req, res) => {
   const rifaTitle = req.body.title;
   const rifaDate = req.body.date;
   const rifaHour = req.body.hour;
+  const rifaNumbers = req.body.numbers;
 
   const newRifa = new Rifa({
     _id: rifaId,
@@ -33,7 +34,7 @@ router.post("/rifas/create", (req, res) => {
     hour: rifaHour,
   });
 
-  for (let i = 1; i <= 100; i++) {
+  for (let i = 1; i <= rifaNumbers; i++) {
     const number = {
       number: i,
       name: ``,
