@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const Rifa = require("../models/Rifa"); // Ruta al archivo donde se define el modelo
@@ -89,8 +90,17 @@ router.put("/:idRifa/numeros", (req, res) => {
 });
 
 // NOTIFICATIONS PUSH
+// Configuración de VAPID
+const vapidKeys = {
+  publicKey: process.env.PUBLIC_VAPID_KEY,
+  privateKey: process.env.PRIVATE_VAPID_KEY,
+};
+webpush.setVapidDetails(
+  "mailto:tu_email@example.com",
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
 
-const webpush = require("../webpush");
 const subscriptions = [];
 
 app.post("/subscribe", (req, res) => {
